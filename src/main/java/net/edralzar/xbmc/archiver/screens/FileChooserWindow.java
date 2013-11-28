@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.List;
 
+import net.edralzar.xbmc.archiver.Core;
+
 import com.googlecode.lanterna.gui.Action;
 import com.googlecode.lanterna.gui.Window;
 import com.googlecode.lanterna.gui.component.Button;
@@ -20,9 +22,24 @@ public class FileChooserWindow extends Window {
 	public FileChooserWindow(final String baseDirectory) {
 		super("Choose files to archive");
 
-		final CheckBoxList folderList = new CheckBoxList();
-		folderList.addItem("test1");
-		folderList.addItem("test2");
+
+		List<File> files = Core.listFiles(baseDirectory, new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".avi");
+			}
+		});
+
+		final CheckBoxList folderList = new CheckBoxList() {
+			protected String createItemString(int index) {
+				String original = super.createItemString(index);
+
+				return original.replaceFirst("\\Q" + baseDirectory + "\\E", "");
+			}
+		};
+		for (File file : files) {
+			folderList.addItem(file);
+		}
 
 		addComponent(folderList);
 		
