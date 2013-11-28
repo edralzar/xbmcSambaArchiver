@@ -17,6 +17,7 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		GUIScreen screen = TerminalFacade.createGUIScreen();
 		screen.getScreen().startScreen();
+		screen.showWindow(new FileChooserWindow("C:\\basle\\data\\test\\"));
 
 		Key k = null;
 		while ((k = screen.getScreen().readInput()) == null
